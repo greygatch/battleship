@@ -15,6 +15,7 @@ function init(){
   $('#create-user').click(createUser);
   $('#login-user').click(loginUser);
   $('#logout-user').click(logoutUser);
+  $('#start').click(populateShips);
   $('#board2 td').on('click', fireGun)
   // ships.on('child_added', userAdded);
   // characters.on('child_added', userdded);
@@ -36,6 +37,10 @@ function fireGun(){
 }
 
 function populateShips(){
+
+  sideSelect();
+
+
   var ships = {
     carrier: 5,
     cruiser: 4,
@@ -45,6 +50,9 @@ function populateShips(){
   }
 
   $('#board td').removeClass();
+
+  var randomXY = Math.floor(Math.random() * 2);
+  console.log(randomXY);
 
   for (var i in ships){
     var randomX = Math.floor(Math.random() * 9);
@@ -59,6 +67,8 @@ function populateShips(){
         console.log('holla');
       }
     }
+
+    // if 
 
 
     for (var j = 0 ; j < ships[i]; j++){
@@ -80,6 +90,8 @@ function populateShips(){
       imp ? $td.addClass('imperial') : $td.addClass('rebel')
 
     }
+
+    // if 0
   }
 }
 
@@ -129,8 +141,6 @@ function loginUser(){
     }
   });
   var uid = root.getAuth().uid;
-  sideSelect();
-  populateShips();
 
   console.log(uid);
   users.push({
