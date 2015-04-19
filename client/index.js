@@ -22,14 +22,10 @@ function init(){
 }
 
 /***************
-      TO-DO
-
+TO-DO
 3. mask opponent locations***
-
 4. store something(s) on Firebase
-
 5. SFX, animations, etc
-
 ***************/
 
 function fireGun(){
@@ -51,52 +47,73 @@ function populateShips(){
 
   $('#board td').removeClass();
 
-  var randomXY = Math.floor(Math.random() * 2);
+
   console.log(randomXY);
 
   for (var i in ships){
     var randomX = Math.floor(Math.random() * 9);
     var randomY = Math.floor(Math.random() * 9);
+    var randomXY = Math.floor(Math.random() * 2);
 
+    if (randomXY){
+      for (var k = 0; k < ships[i]; k++){
+        while ($('#board td[data-x="'+(randomX + k)+'"][data-y="'+randomY+'"]').is('.imperial, .rebel')){
+          randomX = Math.floor(Math.random() * 9);
+          randomY = Math.floor(Math.random() * 9);
+          console.log('holla');
+        }
+      }
 
+      for (var j = 0 ; j < ships[i]; j++){
+        var $td = null;
 
-    for (var k = 0; k < ships[i] + 1; k++){
-      while ($('#board td[data-x="'+(randomX + k)+'"][data-y="'+randomY+'"]').is('.imperial, .rebel')){
-        randomX = Math.floor(Math.random() * 9);
-        randomY = Math.floor(Math.random() * 9);
-        console.log('holla');
+        if (randomX > (9 - ships[i])){
+          randomX = parseInt(randomX / 2);
+        }
+
+        if (j === 0){
+          $td = $('#board td[data-x="'+randomX+'"][data-y="'+randomY+'"]');
+        }
+        else{
+          $td = $('#board td[data-x="'+ (randomX + j) +'"][data-y="'+ randomY + '"]');
+        }
+
+        // $td.css('background-color', 'red');
+        $td.addClass(i);
+        imp ? $td.addClass('imperial') : $td.addClass('rebel')
+
       }
     }
-
-    // if 
-
-
-    for (var j = 0 ; j < ships[i]; j++){
-      var $td = null;
-
-      if (randomX > (9 - ships[i])){
-        randomX = parseInt(randomX / 2);
+    else{
+      for (var k = 0; k < ships[i]; k++){
+        while ($('#board td[data-x="'+ randomX +'"][data-y="'+(randomY + k)+'"]').is('.imperial, .rebel')){
+          randomX = Math.floor(Math.random() * 9);
+          randomY = Math.floor(Math.random() * 9);
+          console.log('holla2');
+        }
       }
 
-      if (j === 0){
-        $td = $('#board td[data-x="'+randomX+'"][data-y="'+randomY+'"]');
-      }
-      else{
-        $td = $('#board td[data-x="'+ (randomX + j) +'"][data-y="'+ randomY + '"]');
-      }
+      for (var j = 0 ; j < ships[i]; j++){
+        var $td = null;
 
-      // $td.css('background-color', 'red');
-      $td.addClass(i);
-      imp ? $td.addClass('imperial') : $td.addClass('rebel')
+        if (randomY > (9 - ships[i])){
+          randomY = parseInt(randomY / 2);
+        }
+
+        if (j === 0){
+          $td = $('#board td[data-x="'+randomX+'"][data-y="'+randomY+'"]');
+        }
+        else{
+          $td = $('#board td[data-x="'+ randomX +'"][data-y="'+ (randomY + j) + '"]');
+        }
+
+        // $td.css('background-color', 'red');
+        $td.addClass(i);
+        imp ? $td.addClass('imperial') : $td.addClass('rebel');
+      }
 
     }
-
-    // if 0
   }
-}
-
-function positionCheck(){
-
 }
 
 function sideSelect(){
