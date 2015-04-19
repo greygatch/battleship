@@ -2,8 +2,14 @@
 
 body{
   background-image: url('/assets/wallpaper.jpg');
+  background-repeat:no-repeat;
+  background-size: cover;
   text-align: center;
   font-family: 'Orbitron', sans-serif;
+}
+#container{
+  width: 850px;
+  margin: 0 auto;
 }
 #jumbotron{
   height: 200px;
@@ -38,8 +44,8 @@ body{
 }
 
 td {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   background-color: rgba(75, 75, 75, .41);
   border-radius: 5px;
 }
@@ -48,4 +54,17 @@ td {
   height: 100px;
   width: 100px;
   margin: 0 1%;
+  border-radius: 100%;
+}
+
+.highlighted{
+  box-shadow: 0 0 10px white;
+}
+
+.rebel{
+  background-color: red;
+}
+
+.imperial{
+  background-color: white;
 }

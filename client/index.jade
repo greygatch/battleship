@@ -2,31 +2,40 @@ doctype html
 html
   head
     meta(charset='utf-8')      
-    title Evan
+    title STAR WARS BATTLESHIP
     link(rel='stylesheet', href='/vendor/font-awesome/css/font-awesome.min.css')
     link(rel='stylesheet', href=isProd ? '/index.min.css' : '/index.css')
     link(rel='shortcut icon', href='/favicon.ico')
   body
-    img#jumbotron(src='/assets/starwars.gif')
-    h1#banner BATTLESHIP
-    
-    img.logo(src='/assets/empire-logo.png')
-    img.logo(src='/assets/rebel-alliance.png')
+    #container
+      input#email(type='email', placeholder='email')
+      input#password(type='password', placeholder='password')
+      button#create-user Create User
+      button#login-user Log In
+      button#logout-user Log Out
       
-    #playerspace
-      table#board
-        tbody
-          - for(var y = 0; y < 10; y++)
-            tr
-              - for(var x = 0; x < 10; x++)
-                td(data-x=x, data-y=y)
-      table#board2
-        tbody
-          - for(var y = 0; y < 10; y++)
-            tr
-              - for(var x = 0; x < 10; x++)
-                td(data-x=x, data-y=y)
+      img#jumbotron(src='/assets/starwars.gif')
+      h1#banner BATTLESHIP
+      
+      
+      img.logo.imp(src='/assets/empire-logo.png')
+      img.logo.reb(src='/assets/rebel-alliance.png')
+      #playerspace
+        table#board
+          tbody
+            - for(var y = 0; y < 10; y++)
+              tr
+                - for(var x = 0; x < 10; x++)
+                  td(data-x=x, data-y=y)
+        table#board2
+          tbody
+            - for(var y = 0; y < 10; y++)
+              tr
+                - for(var x = 0; x < 10; x++)
+                  td(data-x=x, data-y=y)
     
+    script(src='/vendor/firebase/firebase.js')
     script(src='/vendor/jquery/dist/jquery.min.js')
     script(src='/vendor/lodash/lodash.min.js')
+    script(src='/vendor/moment/min/moment.min.js')
     script(src=isProd ? '/index.min.js' : '/index.js')
