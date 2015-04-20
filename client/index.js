@@ -4,6 +4,10 @@
 
 var root, users, ships, myKey, imp;
 
+var turnBool = false;
+
+var move = '/assets/Explosion8.wav';
+var $sound;
 $(document).ready(init);
 
 function init(){
@@ -24,6 +28,7 @@ function init(){
   $('#start').click(populateShips);
   $('#board2 td').on('click', fireGun);
   ships.on('child_added', enemyAdded);
+  $sound = $('#sound');
   // characters.on('child_added', userdded);
 }
 
@@ -49,9 +54,16 @@ function enemyAdded(snapshot){
 }
 
 function fireGun(){
+
   if ($(this).hasClass('hidden')){
     $(this).removeClass();
-    $(this).css('background-color', 'orange');
+    $(this).css('background-image', 'url("http://www.tvboden.se/ssp_director/albums/album-4/hr/explosion.jpg")');
+    $(this).css('background-size', 'cover');
+    $sound.attr('src', move);
+    $sound[0].play();
+  }
+  else{
+    $(this).css('background-color', 'rgba(50, 50, 50, .7)');
   }
 
   if ($('.hidden').length === 0){
