@@ -16,20 +16,28 @@ function init(){
   $('#login-user').click(loginUser);
   $('#logout-user').click(logoutUser);
   $('#start').click(populateShips);
-  $('#board2 td').on('click', fireGun)
+  $('#board2 td').on('click', fireGun);
   // ships.on('child_added', userAdded);
   // characters.on('child_added', userdded);
 }
 
 /***************
 TO-DO
+1. Design for 2 users
+2. Push coordinates to FB
 3. mask opponent locations***
-4. store something(s) on Firebase
-5. SFX, animations, etc
+4. SFX, animations, etc
 ***************/
 
 function fireGun(){
-  console.log(this);
+  if ($(this).hasClass('hidden')){
+    $(this).removeClass();
+    $(this).css('background-color', 'orange');
+  }
+
+  if ($('.hidden').length === 0){
+    alert('win');
+  }
 }
 
 function populateShips(){
@@ -43,12 +51,10 @@ function populateShips(){
     frigate: 3,
     transport: 2,
     fighter: 1
-  }
+  };
 
   $('#board td').removeClass();
-
-
-  console.log(randomXY);
+  $('#board2 td').removeClass();
 
   for (var i in ships){
     var randomX = Math.floor(Math.random() * 9);
@@ -66,21 +72,27 @@ function populateShips(){
 
       for (var j = 0 ; j < ships[i]; j++){
         var $td = null;
+        var $td2 = null;
 
-        if (randomX > (9 - ships[i])){
-          randomX = parseInt(randomX / 2);
+        while (randomX > (10 - ships[i])){
+          randomX = randomX - 1;
         }
 
         if (j === 0){
           $td = $('#board td[data-x="'+randomX+'"][data-y="'+randomY+'"]');
+          $td2 = $('#board2 td[data-x="'+randomX+'"][data-y="'+randomY+'"]');
         }
         else{
           $td = $('#board td[data-x="'+ (randomX + j) +'"][data-y="'+ randomY + '"]');
+          $td2 = $('#board2 td[data-x="'+ (randomX + j) +'"][data-y="'+ randomY + '"]');
         }
 
         // $td.css('background-color', 'red');
         $td.addClass(i);
+        $td2.addClass(i);
+        $td2.addClass('hidden');
         imp ? $td.addClass('imperial') : $td.addClass('rebel')
+        imp ? $td2.addClass('imperial') : $td2.addClass('rebel')
 
       }
     }
@@ -96,25 +108,59 @@ function populateShips(){
       for (var j = 0 ; j < ships[i]; j++){
         var $td = null;
 
-        if (randomY > (9 - ships[i])){
-          randomY = parseInt(randomY / 2);
+        while (randomY > (10 - ships[i])){
+          randomY = randomY - 1;
         }
 
         if (j === 0){
-          $td = $('#board td[data-x="'+randomX+'"][data-y="'+randomY+'"]');
+          $td = $('#board td[data-x="' + randomX + '"][data-y="' + randomY + '"]');
+          $td2 = $('#board2 td[data-x="' + randomX + '"][data-y="' + randomY + '"]');
         }
         else{
-          $td = $('#board td[data-x="'+ randomX +'"][data-y="'+ (randomY + j) + '"]');
+          $td = $('#board td[data-x="' + randomX + '"][data-y="'+ (randomY + j) + '"]');
+          $td2 = $('#board2 td[data-x="' + randomX + '"][data-y="'+ (randomY + j) + '"]');
         }
 
         // $td.css('background-color', 'red');
         $td.addClass(i);
+        $td2.addClass(i);
+        $td2.addClass('hidden');
         imp ? $td.addClass('imperial') : $td.addClass('rebel');
+        imp ? $td2.addClass('imperial') : $td2.addClass('rebel');
       }
-
     }
   }
+  var $boardElements = $('#board td');
+
+  var ships = root.child('ships');
+  var uid = root.getAuth().uid;
+
+  $boardElements.each(function(e){
+    if($($boardElements[e]).hasClass('rebel')){
+      ships.push({
+        imp: imp,
+        uid: uid,
+        x: $($boardElements[e]).data('x'),
+        y: $($boardElements[e]).data('y')
+      })
+    }
+    else if($($boardElements[e]).hasClass('imperial')){
+      ships.push({
+        imp: imp,
+        uid: uid,
+        x: $($boardElements[e]).data('x'),
+        y: $($boardElements[e]).data('y')
+      })
+    }
+  });
+
+
+  users.push({
+    uid: uid,
+    imp: imp
+  })
 }
+
 
 function sideSelect(){
 
@@ -156,13 +202,6 @@ function loginUser(){
     }else{
       console.log('logged in.');
     }
-  });
-  var uid = root.getAuth().uid;
-
-  console.log(uid);
-  users.push({
-    uid: uid,
-    imp: imp
   });
 }
 
