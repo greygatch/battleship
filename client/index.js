@@ -7,17 +7,23 @@ var root, users, ships, myKey, imp;
 $(document).ready(init);
 
 function init(){
+
+
+  // $('#board2 td').removeClass();
+
   root = new Firebase('https://battleship-greygatch.firebaseio.com/');
   users = root.child('users');
   ships = root.child('ships');
   // users.on('child_added', pushUser);
+
+  root.onDisconnect().remove();
 
   $('#create-user').click(createUser);
   $('#login-user').click(loginUser);
   $('#logout-user').click(logoutUser);
   $('#start').click(populateShips);
   $('#board2 td').on('click', fireGun);
-  // ships.on('child_added', userAdded);
+  ships.on('child_added', enemyAdded);
   // characters.on('child_added', userdded);
 }
 
@@ -28,6 +34,19 @@ TO-DO
 3. mask opponent locations***
 4. SFX, animations, etc
 ***************/
+
+function enemyAdded(snapshot){
+  var myID = root.getAuth().uid;
+  var enemyShip = snapshot.val();
+
+  if (enemyShip.uid !== myID){
+    $('#board2 td[data-x="'+ enemyShip.x+'"][data-y="'+enemyShip.y+'"]').addClass('hidden');
+  }
+  else{
+    returnl
+  }
+
+}
 
 function fireGun(){
   if ($(this).hasClass('hidden')){
@@ -42,8 +61,9 @@ function fireGun(){
 
 function populateShips(){
 
-  sideSelect();
+  // $('#board2 td').removeClass();
 
+  sideSelect();
 
   var ships = {
     carrier: 5,
@@ -54,7 +74,7 @@ function populateShips(){
   };
 
   $('#board td').removeClass();
-  $('#board2 td').removeClass();
+  // $('#board2 td').removeClass();
 
   for (var i in ships){
     var randomX = Math.floor(Math.random() * 9);
@@ -72,7 +92,7 @@ function populateShips(){
 
       for (var j = 0 ; j < ships[i]; j++){
         var $td = null;
-        var $td2 = null;
+        // var $td2 = null;
 
         while (randomX > (10 - ships[i])){
           randomX = randomX - 1;
@@ -80,19 +100,19 @@ function populateShips(){
 
         if (j === 0){
           $td = $('#board td[data-x="'+randomX+'"][data-y="'+randomY+'"]');
-          $td2 = $('#board2 td[data-x="'+randomX+'"][data-y="'+randomY+'"]');
+          // $td2 = $('#board2 td[data-x="'+randomX+'"][data-y="'+randomY+'"]');
         }
         else{
           $td = $('#board td[data-x="'+ (randomX + j) +'"][data-y="'+ randomY + '"]');
-          $td2 = $('#board2 td[data-x="'+ (randomX + j) +'"][data-y="'+ randomY + '"]');
+          // $td2 = $('#board2 td[data-x="'+ (randomX + j) +'"][data-y="'+ randomY + '"]');
         }
 
         // $td.css('background-color', 'red');
         $td.addClass(i);
-        $td2.addClass(i);
-        $td2.addClass('hidden');
+        // $td2.addClass(i);
+        // $td2.addClass('hidden');
         imp ? $td.addClass('imperial') : $td.addClass('rebel')
-        imp ? $td2.addClass('imperial') : $td2.addClass('rebel')
+        // imp ? $td2.addClass('imperial') : $td2.addClass('rebel')
 
       }
     }
@@ -114,19 +134,19 @@ function populateShips(){
 
         if (j === 0){
           $td = $('#board td[data-x="' + randomX + '"][data-y="' + randomY + '"]');
-          $td2 = $('#board2 td[data-x="' + randomX + '"][data-y="' + randomY + '"]');
+          // $td2 = $('#board2 td[data-x="' + randomX + '"][data-y="' + randomY + '"]');
         }
         else{
           $td = $('#board td[data-x="' + randomX + '"][data-y="'+ (randomY + j) + '"]');
-          $td2 = $('#board2 td[data-x="' + randomX + '"][data-y="'+ (randomY + j) + '"]');
+          // $td2 = $('#board2 td[data-x="' + randomX + '"][data-y="'+ (randomY + j) + '"]');
         }
 
         // $td.css('background-color', 'red');
         $td.addClass(i);
-        $td2.addClass(i);
-        $td2.addClass('hidden');
+        // $td2.addClass(i);
+        // $td2.addClass('hidden');
         imp ? $td.addClass('imperial') : $td.addClass('rebel');
-        imp ? $td2.addClass('imperial') : $td2.addClass('rebel');
+        // imp ? $td2.addClass('imperial') : $td2.addClass('rebel');
       }
     }
   }
