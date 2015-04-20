@@ -7,7 +7,9 @@ var root, users, ships, myKey, imp;
 var turnBool = false;
 
 var move = '/assets/Explosion8.wav';
+var winSound = '/assets/swtheme.wav';
 var $sound;
+var $sound2;
 $(document).ready(init);
 
 function init(){
@@ -29,6 +31,7 @@ function init(){
   $('#board2 td').on('click', fireGun);
   ships.on('child_added', enemyAdded);
   $sound = $('#sound');
+  $sound2 = $('#sound2');
   // characters.on('child_added', userdded);
 }
 
@@ -67,6 +70,9 @@ function fireGun(){
   }
 
   if ($('.hidden').length === 0){
+
+    $sound2.attr('src', winSound);
+    $sound2[0].play();
     alert('win');
   }
 }
