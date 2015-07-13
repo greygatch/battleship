@@ -14,14 +14,9 @@ $(document).ready(init);
 
 function init(){
 
-
-  // $('#board2 td').removeClass();
-
   root = new Firebase('https://battleship-greygatch.firebaseio.com/');
   users = root.child('users');
   ships = root.child('ships');
-  // users.on('child_added', pushUser);
-
   root.onDisconnect().remove();
 
   $('#create-user').click(createUser);
@@ -32,16 +27,7 @@ function init(){
   ships.on('child_added', enemyAdded);
   $sound = $('#sound');
   $sound2 = $('#sound2');
-  // characters.on('child_added', userdded);
 }
-
-/***************
-TO-DO
-1. Design for 2 users
-2. Push coordinates to FB
-3. mask opponent locations***
-4. SFX, animations, etc
-***************/
 
 function enemyAdded(snapshot){
   var myID = root.getAuth().uid;
@@ -51,7 +37,7 @@ function enemyAdded(snapshot){
     $('#board2 td[data-x="'+ enemyShip.x+'"][data-y="'+enemyShip.y+'"]').addClass('hidden');
   }
   else{
-    returnl
+    return
   }
 
 }
@@ -70,7 +56,7 @@ function fireGun(){
   }
 
   if ($('.hidden').length === 0){
-
+    debugger;
     $sound2.attr('src', winSound);
     $sound2[0].play();
     alert('win');
@@ -203,7 +189,6 @@ function populateShips(){
 function sideSelect(){
 
   $('img').removeClass('highlighted');
-  $('')
 
   var $randomSide = $($('.logo')[Math.floor(Math.random() * 2)]);
 
